@@ -13,14 +13,13 @@ const AdminProducts = () => {
         loadProducts();
     }, []);
 
-
-
     const loadProducts = () => {
         const allProducts = getAllProducts();
         setProducts(allProducts);
         setFilteredProducts(allProducts);
     };
 
+    // FUNCIÓN DE FILTRADO
     const filterProducts = () => {
         let filtered = products;
 
@@ -38,6 +37,11 @@ const AdminProducts = () => {
 
         setFilteredProducts(filtered);
     };
+    
+    // CORRECCIÓN CLAVE: Ejecutar el filtro cada vez que cambien la búsqueda, la categoría o la lista de productos
+    useEffect(() => {
+        filterProducts();
+    }, [searchTerm, selectedCategory, products]);
 
     const handleDelete = (id, name) => {
         if (window.confirm(`¿Estás seguro de eliminar el producto "${name}"?`)) {
