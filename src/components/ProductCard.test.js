@@ -10,7 +10,8 @@ describe('ProductCard Component', () => {
         name: 'Torta de Chocolate',
         description: 'Deliciosa torta de chocolate',
         price: 45000,
-        image: '/img/torta.jpg',
+        // CORRECCIÓN: Ruta de imagen válida de la base de datos original.
+        image: '/torta-cuadrada-de-chocolate.jpg', 
         stock: 10,
         category: 'Tortas'
     };
@@ -50,7 +51,8 @@ describe('ProductCard Component', () => {
         );
         const image = screen.getByAltText('Torta de Chocolate');
         expect(image).toBeTruthy();
-        expect(image.src).toContain('/img/torta.jpg');
+        // Aserción corregida para usar el nombre del archivo.
+        expect(image.src).toContain(mockProduct.image.substring(1)); 
     });
 
     it('should show low stock warning when stock is less than 5', () => {

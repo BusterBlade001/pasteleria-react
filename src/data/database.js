@@ -45,6 +45,12 @@ let orders = [
     }
 ];
 
+// Guardamos una copia profunda del estado inicial (CLAVE para los tests)
+const INITIAL_PRODUCTS_COPY = JSON.parse(JSON.stringify(products));
+const INITIAL_USERS_COPY = JSON.parse(JSON.stringify(users));
+const INITIAL_ORDERS_COPY = JSON.parse(JSON.stringify(orders));
+
+
 // Categorías disponibles
 const categories = [
     "Tortas Cuadradas",
@@ -62,6 +68,17 @@ let nextProductId = products.length + 1;
 let nextUserId = users.length + 1;
 let nextOrderId = orders.length + 1;
 
+// ==================== FUNCIÓN DE RESETEO (NUEVA) ====================
+
+export const resetDatabase = () => {
+    products = JSON.parse(JSON.stringify(INITIAL_PRODUCTS_COPY));
+    users = JSON.parse(JSON.stringify(INITIAL_USERS_COPY));
+    orders = JSON.parse(JSON.stringify(INITIAL_ORDERS_COPY));
+    nextProductId = INITIAL_PRODUCTS_COPY.length + 1;
+    nextUserId = INITIAL_USERS_COPY.length + 1;
+    nextOrderId = INITIAL_ORDERS_COPY.length + 1;
+};
+
 // ==================== FUNCIONES CRUD PARA PRODUCTOS ====================
 
 export const getAllProducts = () => {
@@ -69,7 +86,9 @@ export const getAllProducts = () => {
 };
 
 export const getProductById = (id) => {
-    return products.find(p => p.id === parseInt(id));
+    const product = products.find(p => p.id === parseInt(id));
+    // Si no lo encuentra, find() devuelve 'undefined'.
+    return product; 
 };
 
 export const getProductByCode = (code) => {
@@ -109,7 +128,7 @@ export const deleteProduct = (id) => {
     const index = products.findIndex(p => p.id === parseInt(id));
     if (index !== -1) {
         const deleted = products.splice(index, 1);
-        return deleted[0];
+        return deleted[0]; // Devuelve el objeto eliminado (truthy)
     }
     return null;
 };
@@ -263,6 +282,3 @@ export const getStatistics = () => {
         pendingOrders: orders.filter(o => o.status === "Preparación").length
     };
 };
-
-// Exportar todo como un objeto por si se necesita
-

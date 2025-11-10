@@ -18,7 +18,9 @@ export const isAuthenticated = () => {
 // Verificar si el usuario actual es administrador
 export const isAdmin = () => {
     const user = getCurrentUser();
-    return user && user.role === 'admin';
+    // CORRECCIÓN: Devolver explícitamente false si no hay usuario o si no es admin.
+    if (!user) return false; 
+    return user.role === 'admin';
 };
 
 // Iniciar sesión
@@ -60,5 +62,3 @@ export const updateCurrentUser = (updatedData) => {
     }
     return null;
 };
-
-

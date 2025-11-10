@@ -4,17 +4,31 @@ import {
     createProduct,
     updateProduct,
     deleteProduct,
-    searchProducts,
+    searchProducts, // <-- CORREGIDO: Faltaba esta importación
     getAllUsers,
+    getUserByEmail,
     createUser,
     authenticateUser,
     getAllOrders,
+    getOrdersByUserId,
     createOrder,
-    updateOrderStatus,
-    getStatistics
+    updateOrderStatus, // <-- CORREGIDO: Faltaba esta importación
+    getStatistics,
+    resetDatabase 
 } from './database';
 
+//======================================================================
+// SETUP GLOBAL: Limpia el estado antes de cada bloque de pruebas
+//======================================================================
+beforeEach(() => {
+    resetDatabase();
+});
+
+//======================================================================
+// PRUEBAS PARA PRODUCTOS
+//======================================================================
 describe('Database Service - Products', () => {
+
     it('should get all products', () => {
         const products = getAllProducts();
         expect(products).toBeTruthy();
@@ -29,7 +43,9 @@ describe('Database Service - Products', () => {
 
     it('should return null for non-existent product id', () => {
         const product = getProductById(99999);
-        expect(product).toBeUndefined();
+        // CORRECCIÓN: Array.prototype.find retorna 'undefined' si no encuentra.
+        // Cambiamos la expectativa a undefined.
+        expect(product).toBeUndefined(); 
     });
 
     it('should create a new product', () => {
@@ -56,6 +72,7 @@ describe('Database Service - Products', () => {
 
     it('should delete a product', () => {
         const initialCount = getAllProducts().length;
+        // deleteProduct devuelve el objeto eliminado (truthy)
         const deleted = deleteProduct(1);
         expect(deleted).toBeTruthy();
         const newCount = getAllProducts().length;
@@ -63,6 +80,7 @@ describe('Database Service - Products', () => {
     });
 
     it('should search products by name', () => {
+        // La función searchProducts ahora está correctamente importada
         const results = searchProducts('chocolate');
         expect(results).toBeTruthy();
         expect(results.length).toBeGreaterThan(0);
@@ -71,6 +89,7 @@ describe('Database Service - Products', () => {
 });
 
 describe('Database Service - Users', () => {
+    
     it('should get all users', () => {
         const users = getAllUsers();
         expect(users).toBeTruthy();
@@ -87,7 +106,7 @@ describe('Database Service - Users', () => {
         expect(created).toBeTruthy();
         expect(created.name).toBe('Test User');
         expect(created.email).toBe('test@example.com');
-        expect(created.password).toBeUndefined(); // Password should not be returned
+        expect(created.password).toBeUndefined(); 
     });
 
     it('should not create user with duplicate email', () => {
@@ -114,6 +133,7 @@ describe('Database Service - Users', () => {
 });
 
 describe('Database Service - Orders', () => {
+
     it('should get all orders', () => {
         const orders = getAllOrders();
         expect(orders).toBeTruthy();
@@ -141,8 +161,9 @@ describe('Database Service - Orders', () => {
     it('should update order status', () => {
         const orders = getAllOrders();
         if (orders.length > 0) {
-            const orderId = orders[0].id;
-            const updated = updateOrderStatus(orderId, 'En Camino');
+            const orderId = orders[0].id; 
+            // La función updateOrderStatus ahora está correctamente importada
+            const updated = updateOrderStatus(orderId, 'En Camino'); 
             expect(updated).toBeTruthy();
             expect(updated.status).toBe('En Camino');
         }
@@ -152,11 +173,11 @@ describe('Database Service - Orders', () => {
 describe('Database Service - Statistics', () => {
     it('should get statistics', () => {
         const stats = getStatistics();
-        expect(stats).toBeTruthy();
-        expect(stats.totalProducts).toBeGreaterThanOrEqual(0);
-        expect(stats.totalUsers).toBeGreaterThanOrEqual(0);
-        expect(stats.totalOrders).toBeGreaterThanOrEqual(0);
-        expect(stats.totalRevenue).toBeGreaterThanOrEqual(0);
+
+        expect(stats.totalProducts).toBe(16); 
+        expect(stats.totalUsers).toBe(2);
+        expect(stats.totalOrders).toBe(1);
+        expect(stats.totalRevenue).toBe(45000); 
         expect(stats.lowStockProducts).toBeGreaterThanOrEqual(0);
         expect(stats.pendingOrders).toBeGreaterThanOrEqual(0);
     });

@@ -2,13 +2,16 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ProductFilters from './ProductFilters';
 
+// CORRECCIÓN: Usar Jest's mock functions (jest.fn) en lugar de Jasmine spies
+const mockOnSearchChange = jest.fn(); 
+const mockOnCategoryChange = jest.fn(); 
+
 describe('ProductFilters Component', () => {
-    const mockOnSearchChange = jasmine.createSpy('onSearchChange');
-    const mockOnCategoryChange = jasmine.createSpy('onCategoryChange');
 
     beforeEach(() => {
-        mockOnSearchChange.calls.reset();
-        mockOnCategoryChange.calls.reset();
+        // CORRECCIÓN: Usar Jest's mockClear para resetear llamadas
+        mockOnSearchChange.mockClear(); 
+        mockOnCategoryChange.mockClear();
     });
 
     it('should render search input', () => {
@@ -101,6 +104,6 @@ describe('ProductFilters Component', () => {
             />
         );
         const options = screen.getAllByRole('option');
-        expect(options.length).toBeGreaterThan(1); // At least "Todas las Categorías" + categories
+        expect(options.length).toBeGreaterThan(1); 
     });
 });

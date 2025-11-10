@@ -89,11 +89,12 @@ module.exports = function(config) {
                     use: ['style-loader', 'css-loader']
                 },
                 // Regla para manejar archivos de imagen (CORRECCIÓN)
-                {
+               {
                     test: /\.(png|jpe?g|gif|svg|ico)$/i,
                     loader: 'file-loader',
                     options: {
-                        name: '[name].[ext]' 
+                        name: '[name].[ext]',
+                        esModule: false // <-- Asegúrate de que esta línea esté aquí
                     }
                 }
             ]
