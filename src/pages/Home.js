@@ -20,6 +20,7 @@ const Home = () => {
     }, []);
 
     // CORRECCIÓN ESLINT: Efecto 2: Ejecuta la lógica de filtrado cuando cambian los estados
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         let filtered = products;
 
