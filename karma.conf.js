@@ -1,60 +1,42 @@
 // Karma configuration
 module.exports = function(config) {
   config.set({
-    // base path that will be used to resolve all patterns (eg. files, exclude)
+
+    // base path that will be used to resolve all patterns (e.g. files, exclude)
     basePath: '',
 
     // frameworks to use
-    // available frameworks: https://www.npmjs.com/search?q=keywords:karma-adapter
     frameworks: ['jasmine'],
 
     // list of files / patterns to load in the browser
     files: [
-      'src/**/*.spec.js',
-      'src/**/*.test.js'
+      'src/**/*.test.js',
+      // Si tienes archivos .spec.js, descomenta la siguiente línea:
+      // 'src/**/*.spec.js'
     ],
 
     // list of files / patterns to exclude
-    exclude: [
-    ],
+    exclude: [],
 
     // preprocess matching files before serving them to the browser
-    // available preprocessors: https://www.npmjs.com/search?q=keywords:karma-preprocessor
     preprocessors: {
-      'src/**/*.spec.js': ['webpack'],
+      'src/**/*.js': ['webpack', 'coverage'], // APLICAR WEBPACK Y COBERTURA A TODOS LOS JS
+      'src/**/*.jsx': ['webpack', 'coverage'], // Si usas JSX
       'src/**/*.test.js': ['webpack']
     },
 
-    // webpack configuration
-    webpack: {
-      mode: 'development',
-      module: {
-        rules: [
-          {
-            test: /\.(js|jsx)$/,
-            exclude: /node_modules/,
-            use: {
-              loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env', '@babel/preset-react']
-              }
-            }
-          },
-          {
-            test: /\.css$/,
-            use: ['style-loader', 'css-loader']
-          }
-        ]
-      },
-      resolve: {
-        extensions: ['.js', '.jsx']
-      }
-    },
+    // AÑADIR 'coverage' A LOS PLUGINS
+    plugins: [
+        'karma-jasmine',
+        'karma-chrome-launcher',
+        'karma-webpack',
+        'karma-coverage' // Asegura que el plugin esté disponible
+    ],
+
 
     // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://www.npmjs.com/search?q=keywords:karma-reporter
-    reporters: ['progress'],
+    // NOTA: 'coverage' solo funciona si está instalado (ver Paso 1)
+    reporters: ['progress', 'coverage'],
 
     // web server port
     port: 9876,
@@ -63,22 +45,62 @@ module.exports = function(config) {
     colors: true,
 
     // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
+    autoWatch: false, // Cambiado a 'false' ya que usas --single-run
 
     // start these browsers
-    // available browser launchers: https://www.npmjs.com/search?q=keywords:karma-launcher
-    browsers: ['ChromeHeadless'],
+    browsers: ['ChromeHeadless'], // Recuerda exportar CHROME_BIN
 
     // Continuous Integration mode
-    // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
-    // how many browser instances should be started simultaneously
-    concurrency: Infinity
-  })
-}
+    concurrency: Infinity,
+    
+    // Configuraciones de cobertura
+    coverageReporter: {
+        dir : 'coverage/',
+        reporters: [
+            { type: 'html', subdir: 'html' },
+            { type: 'text-summary' }
+        ]
+    },
+
+    // Configuración de Webpack para el preprocesador
+    webpack: {
+        mode: 'development',
+        module: {
+            rules: [
+                {
+                    test: /\.(js|jsx)$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@babel/preset-env', '@babel/preset-react']
+                        }
+                    }
+                },
+                // Regla para archivos CSS
+                {
+                    test: /\.css$/,
+                    use: ['style-loader', 'css-loader']
+                },
+                // Regla para manejar archivos de imagen (CORRECCIÓN)
+                {
+                    test: /\.(png|jpe?g|gif|svg|ico)$/i,
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]' 
+                    }
+                }
+            ]
+        },
+        resolve: {
+            extensions: ['.js', '.jsx']
+        }
+    }
+  });
+};
