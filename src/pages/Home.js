@@ -12,14 +12,15 @@ const Home = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
 
+    // Efecto 1: Carga inicial de todos los productos
     useEffect(() => {
         const allProducts = getAllProducts();
         setProducts(allProducts);
-        setFilteredProducts(allProducts);
+        // NOTA: setFilteredProducts se manejará en el siguiente useEffect
     }, []);
 
-    // FUNCIÓN DE FILTRADO
-    const filterProducts = () => {
+    // CORRECCIÓN ESLINT: Efecto 2: Ejecuta la lógica de filtrado cuando cambian los estados
+    useEffect(() => {
         let filtered = products;
 
         if (selectedCategory) {
@@ -35,14 +36,9 @@ const Home = () => {
         }
 
         setFilteredProducts(filtered);
-    };
-
-    // CORRECCIÓN CLAVE: Ejecutar la función de filtrado cada vez que cambien el término de búsqueda o la categoría.
-    useEffect(() => {
-        filterProducts();
-    }, [searchTerm, selectedCategory, products]);
+    }, [searchTerm, selectedCategory, products]); // Dependencias limpias
     
-    // ... el resto de la función Home (handleShare) y el JSX es el mismo
+    
     const handleShare = () => {
         const shareUrl = window.location.href;
         const shareText = "¡Descubre la dulzura de la vida con Pastelería Mil Sabores! Te encantarán sus tortas y postres tradicionales.";

@@ -9,18 +9,18 @@ const AdminProducts = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const categories = getCategories();
 
+    const loadProducts = () => {
+        const allProducts = getAllProducts();
+        setProducts(allProducts);
+    };
+
+    // Efecto 1: Carga inicial de datos
     useEffect(() => {
         loadProducts();
     }, []);
 
-    const loadProducts = () => {
-        const allProducts = getAllProducts();
-        setProducts(allProducts);
-        setFilteredProducts(allProducts);
-    };
-
-    // FUNCIÓN DE FILTRADO
-    const filterProducts = () => {
+    // CORRECCIÓN ESLINT: Efecto 2: Ejecuta la lógica de filtrado cuando cambian los estados
+    useEffect(() => {
         let filtered = products;
 
         if (selectedCategory) {
@@ -36,12 +36,10 @@ const AdminProducts = () => {
         }
 
         setFilteredProducts(filtered);
-    };
-    
-    // CORRECCIÓN CLAVE: Ejecutar el filtro cada vez que cambien la búsqueda, la categoría o la lista de productos
-    useEffect(() => {
-        filterProducts();
     }, [searchTerm, selectedCategory, products]);
+    
+    // NOTA: La función filterProducts original ha sido eliminada para evitar la advertencia de 'unused'.
+    // Su lógica se ha movido al useEffect anterior.
 
     const handleDelete = (id, name) => {
         if (window.confirm(`¿Estás seguro de eliminar el producto "${name}"?`)) {
