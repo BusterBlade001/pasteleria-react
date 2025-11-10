@@ -18,6 +18,12 @@ import Profile from './pages/Profile';
 import TrackOrder from './pages/TrackOrder';
 import CheckoutSuccess from './pages/CheckoutSuccess';
 
+// NUEVAS PÁGINAS IMPORTADAS
+import Contact from './pages/Contact'; 
+import Checkout from './pages/Checkout'; 
+import CheckoutFailure from './pages/CheckoutFailure'; 
+
+
 // Páginas de administrador
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
@@ -49,6 +55,11 @@ function App() {
           <Route path="/seguimiento/:trackingNumber" element={<TrackOrder />} />
           <Route path="/checkout-success" element={<CheckoutSuccess />} />
           
+          {/* NUEVAS RUTAS */}
+          <Route path="/contacto" element={<Contact />} /> 
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout-failure" element={<CheckoutFailure />} />
+
           {/* Rutas de administrador (protegidas) */}
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/admin/productos" element={<AdminRoute><AdminProducts /></AdminRoute>} />
