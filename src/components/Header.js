@@ -53,8 +53,11 @@ const Header = () => {
                     <ul>
                         <li><Link to="/catalogo">Catálogo</Link></li>
                         <li><Link to="/categorias">Categorías</Link></li>
+                        <li><Link to="/ofertas">Ofertas</Link></li>
                         <li><Link to="/nosotros">Nuestra Historia</Link></li>
                         <li><Link to="/blog">Blog</Link></li>
+                        {/* CORRECCIÓN: Se añade el enlace a la página de Contacto */}
+                        <li><Link to="/contacto">Contacto</Link></li> 
                     </ul>
                 </nav>
 
