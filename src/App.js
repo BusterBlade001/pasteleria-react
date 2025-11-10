@@ -12,6 +12,7 @@ import CategoryView from './pages/CategoryView';
 import Offers from './pages/Offers';
 import About from './pages/About';
 import Blog from './pages/Blog';
+import BlogDetail from './pages/BlogDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
@@ -48,13 +49,24 @@ function App() {
           <Route path="/ofertas" element={<Offers />} />
           <Route path="/nosotros" element={<About />} />
           <Route path="/blog" element={<Blog />} />
+          {/* Rutas públicas */}
+          <Route path="/" element={<Home />} />
+          <Route path="/catalogo" element={<Home />} />
+          {/* ... (otras rutas) */}
+          <Route path="/ofertas" element={<Offers />} />
+          <Route path="/nosotros" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+          
+          {/* NUEVA RUTA: Detalle del Blog */}
+          <Route path="/blog/:id" element={<BlogDetail />} /> 
+          <Route path="/login" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/seguimiento" element={<TrackOrder />} />
           <Route path="/seguimiento/:trackingNumber" element={<TrackOrder />} />
           <Route path="/checkout-success" element={<CheckoutSuccess />} />
-          
+
           {/* NUEVAS RUTAS */}
           <Route path="/contacto" element={<Contact />} /> 
           <Route path="/checkout" element={<Checkout />} />
